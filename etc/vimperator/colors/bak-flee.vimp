@@ -1,0 +1,100 @@
+" ==VimperatorColorSchema==
+" name: flee
+" ==/VimperatorColorSchema==
+
+hi Hint font-size:11px; background-color:blue; border:1px blue solid; color:white; font-weight:bolder; z-index:50000;
+hi HintElem		background-color: lightblue;
+hi HintActive		background-color: aqua;
+
+"hi StatusLine	      color:  aqua;  background: #000; font-weight: normal; font-size: 12pt;
+hi StatusLine 	      color:  aqua;  background: rgba(0,0,0,0.7); font-weight: normal; font-size: 12pt;
+"hi StatusLineBroken   color:  black; background: #ffa0a0; font-weight: normal; font-size: 12pt;
+"hi StatusLineExtended color:  black; background: #a0ffa0; font-weight: normal; font-size: 12pt;
+"hi StatusLineSecure   color:  black; background: #a0a0ff; font-weight: normal; font-size: 12pt;
+
+"hi Normal	      color:  LightYellow;  background: #333; font-size: 12pt;
+hi Normal 	      color:  LightYellow;  background: rgba(51,51,51,0.7); font-size: 12pt;
+hi CmdLine   	      color:  LightYellow;  background: #333; font-size: 12pt;
+hi InfoMsg   	      color:  LightYellow;  background: #333; font-size: 12pt;
+"hi ModeMsg   	      color:  LightYellow;  background: #333; font-size: 12pt;
+hi ModeMsg	      color:  LightYellow;  background: rgba(51,51,51,0.7); font-size: 12pt;
+hi MoreMsg  	      color:  LimeGreen;    background: #333;
+hi LineNr   	      color:  DeepPink;     background: #333; font-size: 12pt;
+hi Question	      color:  LightBlue;    background: #333; font-size: 12pt;
+hi WarningMsg         color:  DeepPink;     background: #333; font-size: 12pt;
+hi ErrorMsg   	      color:  white;  	    background: red;  font-size: 12pt;
+hi NonText    	      background: #333;
+hi Null     	      color:  CornflowerBlue;
+hi Tag      	      color:  CornflowerBlue;
+
+hi CompTitle          color:  DeepPink;		background: #222; font-weight: bold;
+"hi CompItem[selected] color:  aqua;  		background: Black;
+hi CompItem[selected] color:  aqua;	background: rgba(0,0,0,0.7);
+hi CompDesc   	      color:  LightBlue;
+
+hi Title    	      color:  white;
+hi Indicator          color:  DodgerBlue;
+hi String   	      color:  Orchid;
+hi Number   	      color:  Orchid;
+hi Object   	      color:  Khaki;
+hi Function   	      color:  SkyBlue;
+hi URL    	      color:  LightGreen;
+
+set! browser.tabs.closeButtons=0
+style -name tab chrome://* <<EOM
+#content { background-color: #ddd; } /* tabbar */
+.tabs-alltabs-button { padding: 0 !important; }
+.tabs-container { height: 20px; border-bottom: 2px solid #333; }
+.tabs-container > stack { display: none; } /* remove tab selection menu */
+.tabbrowser-tab {
+    -moz-appearance: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -moz-border-radius-topleft: 0 !important;
+    -moz-border-radius-topright: 0 !important;
+    -moz-border-radius-bottomright: 0 !important;
+    -moz-border-radius-bottomleft: 0 !important;
+    border: 0 none !important;
+    background-image: none !important;
+    background-color: #333 !important;
+}
+.tabbrowser-tab[selected=false] { background: #000 !important; color: white !important;}
+.tabbrowser-tab[selected=true] > .tab-text { background: #000 !important; color: aqua !important; font-weight: bold !important;}
+.tabbrowser-tab[selected=true] { background: #000 !important; color: DeepPink !important;}
+
+.tabbrowser-strip { background: #444 !important; }
+
+.tab-close-button {display: none;}
+.tabs-newtab-button {display: none !important;}
+.treestyletab-splitter {width: 0 !important;}
+.treestyletab-splitter grippy {display: none !important;}
+
+#content tab:not([selected]) {
+background-color: #333 !important; color:CornflowerBlue  !important;
+}
+EOM
+
+"----------------------------------------
+
+" for personas
+
+" style -name personas chrome://* <<EOM
+" #main-window { background-repeat: repeat-y !important; }
+" #browser-bottombox { background-image: none !important; }
+" #liberator-multiline-output, #liberator-completions { background: transparent !important; }
+" #content tabpanels { background-color: transparent !important; }
+" EOM
+" autocmd LocationChange .* :js getBrowser().mCurrentBrowser.collapsed = buffer.URL == "about:blank" ? true : false
+
+"style -name personaPosition chrome://* #main-window:-moz-lwtheme {background-position: left top !important}
+
+" javascript <<EOF
+" var theme = {
+" id: "test1",
+" name: "custom1",
+" headerURL: "file:///home/ikegaya/picture/kabe/perikan.png"
+" };
+" document.documentElement._lightweightTheme._update(theme);
+" EOF
+
+

@@ -1,0 +1,41 @@
+"vimperator3
+
+"Color Scheme
+"colorscheme temp
+colorscheme taro
+"colorscheme 
+
+"jkスクロールの値を10に
+map j 10<C-e>
+map k 10<C-y>
+map <C-g> <ESC>
+
+"テキスト入力時
+imap <C-h> <BS>
+imap <C-f> <RIGHT>
+imap <C-b> <LEFT>
+imap <C-p> <UP>
+imap <C-n> <DOWN>
+imap <C-g> <ESC>
+
+"コマンドライン上
+cmap <C-h> <BS>
+cmap <C-f> <RIGHT>
+cmap <C-b> <LEFT>
+cmap <C-p> <UP>
+cmap <C-n> <DOWN>
+cmap <C-g> <ESC>
+
+
+"タブだけにする
+set gui=none,tabs
+
+"ヒントモード
+set hintchars=ifjklasdweuocvbnm
+
+"再読み込み
+map ,s :so /home/yamada/.vimperatorrc<CR> 
+
+"items-> open,tabopenの時に出てくる一覧の設定
+"set complete=h
+set maxitems=20

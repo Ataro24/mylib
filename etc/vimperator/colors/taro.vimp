@@ -1,0 +1,78 @@
+" -- vimperator colorscheme --
+" name: flee
+" author: Tomoki Ikegaya
+" tested: vimperator 3.0, firefox 4.0, oracle solaris 11
+" ----------------------------
+
+"" Hint-Mode ""
+hi Hint font-size:12px; background-color:tomato; border:1px tomato solid; color:white; font-weight:bolder; z-index:50000; text-transform: uppercase;
+hi HintElem		background-color: mistyrose;
+hi HintActive		background-color: mistyrose;
+
+"" Settings ""
+hi StatusLine 	      color:  darkred;  background: white; font-weight: normal; font-size: 12pt;
+"hi Normal 	      color:  white;  background: rgba(51,51,51,0.7); font-size: 12pt; "image-before
+hi Normal 	      color:  black;  background: white; font-size: 12pt; 
+hi CmdLine   	      color:  maroon;  background: rgba(255,0,0,0.10); font-size: 12pt; font-weight: bold;
+hi ModeMsg	      color:  DeepPink;  background: rgba(0,0,0,0.7); font-weight: normal; font-size: 12pt;
+hi MoreMsg	      color:  LightGreen;  background: rgba(0,0,0,0.7); font-weight: normal; font-size: 12pt;
+hi InfoMsg	      color:  DeepPink;  background: rgba(0,0,0,0.7); font-weight: normal; font-size: 12pt;
+hi ErrorMsg   	      color:  white;  	    background: red;  font-size: 12pt;
+hi NonText    	      background: #333;
+hi Title    	      color:  white;
+hi Indicator          color:  red;
+hi Function   	      color:  SkyBlue;
+hi URL    	      color:  darkred; "LightGreen;
+hi Filter	      color:  darkred;  background: rgba(255,0,0,0.30);	font-size: 12pt;
+hi Question	      color:  DeepPink; background: rgba(0,0,0,0.7);  font-size: 12pt; font-weight: bold;
+hi NonText            color:  crimson; min-height: 16px; padding-left: 2px; background: transparent !important;
+
+"" Comp Settings ""
+hi CompTitle	      background: dimgray;
+hi CompTitle>*	      color:  white; font-weight: bold;
+
+hi CompGroup	      background: url("file:///home/yamada/Desktop/nekoso/ringo.jpg") no-repeat fixed 85% 30%; background-size: 60%;
+"cover;
+hi CompItem	      background: url("file:///home/yamada/Desktop/nekoso/ringo.jpg") no-repeat fixed 85% 30%; background-size: 60%;
+"cover;
+
+hi CompItem[selected] color:  darkred;  background: rgba(255,0,0,0.30); font-weight: bold;
+hi CompDesc   	      color:  black;
+
+
+"" Java Script ""
+hi Tag      	      color:  CornflowerBlue;
+
+""---------------------------------------------------------------------""
+
+"" Tab Settings ""
+set! browser.tabs.closeButtons=0
+style -name tab chrome://* <<EOM
+#content { background-color: #ddd; } /* tabbar */
+.tabs-alltabs-button { padding: 0 !important; }
+.tabs-container {height: 20px; border-bottom: 2px solid #333; }
+.tabs-container > stack { display: none; } /* remove tab selection menu */
+.tabbrowser-tab {
+    -moz-appearance: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -moz-border-radius-topleft: 0 !important;
+    -moz-border-radius-topright: 0 !important;
+    -moz-border-radius-bottomright: 0 !important;
+    -moz-border-radius-bottomleft: 0 !important;
+    color: grey !important;
+    border: 0 none !important;
+    background-image: none !important;
+    background-color: gainsboro !important;
+}
+.tabbrowser-tab[selected=true] > .tab-text { background: mistyrose !important; color: darkred !important; font-weight: bold !important;}
+.tabbrowser-tab[selected=true] { background: mistyrose !important; color: darkred !important; font-weight: bold !important;}
+
+.tabbrowser-strip { background: #444 !important; }
+
+.tab-close-button {display: none;}
+.tabs-newtab-button {display: none}
+.treestyletab-splitter {width: 0 !important;}
+.treestyletab-splitter grippy {display: none !important;}
+
+EOM
