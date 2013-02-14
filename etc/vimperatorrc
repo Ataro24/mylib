@@ -39,3 +39,6 @@ map ,s :so /home/yamada/.vimperatorrc<CR>
 "items-> open,tabopenの時に出てくる一覧の設定
 "set complete=h
 set maxitems=20
+
+"デフォルト検索エンジンをgoogleに
+set defsearch=g
