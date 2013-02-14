@@ -1,3 +1,7 @@
+;;;elispプログラムを置くところへパスを通す
+(setq load-path (cons "~/mylib/emacs" load-path))
+
+
 (defvar matlab:current-system
   (nth 2 (split-string system-configuration "-")))
 
@@ -34,26 +38,27 @@
 ;;;
 ;; Anthy 
 ;;
-(when (string-match "linux" system-configuration)
- (load-library "anthy")
- (or 
-  (and (assoc "japanese-egg-anthy" input-method-alist)	; egg-anthy
-	(require 'egg)
-	(setq enable-double-n-syntax		t)
-	(setq egg-conversion-wrap-select	t
-	      egg-conversion-auto-candidate-menu 2)
-	(setq default-input-method "japanese-egg-anthy"))
-  (and (assoc "japanese-anthy" input-method-alist)	; anthy
-	(setq default-input-method 'japanese-anthy))))
-;;anthyのタイムアウト時間を短くする
-(load-library "anthy")
-(if (>= emacs-major-version 23)
-   (setq anthy-accept-timeout 1))  
+;; (when (string-match "linux" system-configuration)
+;;  (load-library "anthy")
+;;  (or 
+;;   (and (assoc "japanese-egg-anthy" input-method-alist)	; egg-anthy
+;; 	(require 'egg)
+;; 	(setq enable-double-n-syntax		t)
+;; 	(setq egg-conversion-wrap-select	t
+;; 	      egg-conversion-auto-candidate-menu 2)
+;; 	(setq default-input-method "japanese-egg-anthy"))
+;;   (and (assoc "japanese-anthy" input-method-alist)	; anthy
+;; 	(setq default-input-method 'japanese-anthy))))
+;; ;;anthyのタイムアウト時間を短くする
+;; (load-library "anthy")
+;; (if (>= emacs-major-version 23)
+;;    (setq anthy-accept-timeout 1))  
 
+;; mozc
+(require 'mozc)
+(set-language-environment "Japanese")
+(setq default-input-method "japanese-mozc")
 
-
-;;;elispプログラムを置くところへパスを通す
-(setq load-path (cons "~/mylib/emacs" load-path))
 
 
 ;;;
