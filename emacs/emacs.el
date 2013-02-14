@@ -53,7 +53,7 @@
 
 
 ;;;elispプログラムを置くところへパスを通す
-(setq load-path (cons "~/elisp" load-path))
+(setq load-path (cons "~/mylib/emacs" load-path))
 
 
 ;;;
@@ -222,7 +222,7 @@
 ;;
 (if (>= emacs-major-version 23)
       (progn
-	(setq load-path (cons "~/elisp/color-theme-6.6.0" load-path))
+	(setq load-path (cons "~/mylib/emacs/color-theme-6.6.0" load-path))
 	(require 'color-theme)
 	(color-theme-initialize)
 	(color-theme-dark-laptop)
@@ -421,7 +421,7 @@ Return its components if so, nil otherwise."
 ;; (add-to-list 'load-path ac-dir)
 (require 'auto-complete)
 (require 'auto-complete-config)    ; 必須ではないですが一応
-(add-to-list 'ac-dictionary-directories "~/elisp/auto-complete-1.3.1/dict/")
+(add-to-list 'ac-dictionary-directories "~/mylib/emacs/auto-complete-1.3.1/dict/")
 (global-auto-complete-mode t)
 (setq ac-auto-start nil)
 (ac-set-trigger-key "TAB")

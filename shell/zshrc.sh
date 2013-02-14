@@ -93,7 +93,6 @@ $ "
 
     export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/project/camp/sim/proj-sap/bin
     echo -n '[31m'
-    /usr/bin/quota -q
     echo -n '[00m'
     
     # ls color
@@ -112,7 +111,6 @@ $ "
     noglob stty intr  ^c
     noglob stty susp  ^z
     echo -n '[31m'
-    /usr/sbin/quota
     echo -n '[00m'
 
     # ls color
