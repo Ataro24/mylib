@@ -1,3 +1,7 @@
+;;;elispプログラムを置くところへパスを通す
+(setq load-path (cons "~/mylib/emacs/" load-path))
+
+
 (defvar matlab:current-system
   (nth 2 (split-string system-configuration "-")))
 
@@ -54,12 +58,6 @@
 (require 'mozc)
 (set-language-environment "Japanese")
 (setq default-input-method "japanese-mozc")
-
-
-
-
-;;;elispプログラムを置くところへパスを通す
-(setq load-path (cons "~/mylib/emacs/" load-path))
 
 
 ;;;
