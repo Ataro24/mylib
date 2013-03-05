@@ -50,6 +50,12 @@
 ;; (if (>= emacs-major-version 23)
 ;;    (setq anthy-accept-timeout 1))  
 
+;; mozc
+(require 'mozc)
+(set-language-environment "Japanese")
+(setq default-input-method "japanese-mozc")
+
+
 
 
 ;;;elispプログラムを置くところへパスを通す
