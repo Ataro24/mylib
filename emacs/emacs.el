@@ -54,10 +54,23 @@
 ;; (if (>= emacs-major-version 23)
 ;;    (setq anthy-accept-timeout 1))  
 
+;;ibus
+;; ibus-mozcを利用するためには ibus-elをインストールしておく必要有り
+(require 'ibus)
+(add-hook 'after-init-hook 'ibus-mode-on)
+;; Use C-SPC for Set Mark command
+(ibus-define-common-key ?\C-\s nil)
+;; Use C-/ for Undo command
+(ibus-define-common-key ?\C-/ nil)
+;; Change cursor color depending on IBus status
+(setq ibus-cursor-color '("limegreen" "white" "blue"))
+(global-set-key [?\S-\ ] 'ibus-toggle)
+
 ;; mozc
 (require 'mozc)
 (set-language-environment "Japanese")
 (setq default-input-method "japanese-mozc")
+
 
 
 ;;;
