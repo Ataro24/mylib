@@ -58,14 +58,15 @@
 ;; ibus
 (require 'ibus);ibus.elとpython-xlibが必要
 (add-hook 'after-init-hook 'ibus-mode-on)
-;; (ibus-define-common-key ?\C-\s nil); Use C-SPC for Set Mark command
-;; (ibus-define-common-key ?\C-/ nil);; Use C-/ for Undo command
-;; IBusの状態によってカーソル色を変化させる ("on" "off" "disabled")
+(ibus-define-common-key ?\C-\s nil); Use C-SPC for Set Mark command
+(ibus-define-common-key ?\C-/ nil);; Use C-/ for Undo command
+;;IBusの状態によってカーソル色を変化させる ("on" "off" "disabled")
 (setq ibus-cursor-color '("limegreen" "white" "blue"))
-;; shift-space でibus発動
+;;shift-space でibus発動
 (global-set-key [?\S-\ ] 'ibus-toggle)
-;; カーソル位置で予測候補ウィンドウを表示 (default はプリエディット領域の先頭位置に表示)
-(setq ibus-prediction-window-position t)
+
+;;カーソル位置で予測候補ウィンドウを表示 (default はプリエディット領域の先頭位置に表示)
+;(setq ibus-prediction-window-position t);これがあるとC-SPACEで範囲指定できない？
 
 ;; mozc
 (require 'mozc)
