@@ -80,7 +80,8 @@ limit -h coredumpsize 0
 case $OSTYPE in
 linux-gnu*)
     case $HOST in
-    moco.matlab.nitech.ac.jp)
+    #moco.matlab.nitech.ac.jp)
+    fastener)
     PROMPT="%n@"$'%{\e[$[44]m%}'"%m"$'\e[m'":%~/
 $ "	
     ;;
@@ -91,7 +92,7 @@ $ "
     ;;
     esac
 
-    export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/project/camp/sim/proj-sap/bin
+    export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/project/camp/sim/proj-sap/bin:/usr/bin
     echo -n '[31m'
     echo -n '[00m'
     
