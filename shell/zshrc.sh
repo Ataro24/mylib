@@ -91,7 +91,7 @@ $ "
     ;;
     esac
 
-    export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/project/camp/sim/proj-sap/bin
+    export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/project/camp/sim/proj-sap/bin:/usr/bin
     echo -n '[31m'
     echo -n '[00m'
     
