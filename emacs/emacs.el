@@ -1,4 +1,4 @@
-3;;;elispプログラムを置くところへパスを通す
+;;;elispプログラムを置くところへパスを通す
 (setq load-path (cons "~/mylib/emacs/" load-path))
 
 
@@ -32,6 +32,7 @@
 (set-buffer-file-coding-system	'utf-8)
 (set-terminal-coding-system	'utf-8)
 (setq default-file-name-coding-system 'utf-8)
+(setq auto-coding-functions nil)
 
 ;;;
 ;;; Japanese Input Method
@@ -108,20 +109,20 @@
 ;;;
 (if (locate-library "auctex")
     (load "auctex.el" nil t t))
-(setq TeX-japanese-process-input-coding-system  'japanese-iso-8bit
-      TeX-japanese-process-output-coding-system 'iso-2022-jp
-      LaTeX-version			"2e"
-      japanese-LaTeX-default-style	"jarticle"
-      TeX-default-mode			'japanese-latex-mode
-      TeX-force-default-mode		t
-      LaTeX-top-caption-list		'("table" "tabular")
-      TeX-command-default		"pLaTeX"
-      TeX-parse-self			t
-      japanese-LaTeX-command-default	"pLaTeX"
-      LaTeX-float			"tn"
-      LaTeX-figure-label		"fig:"
-      LaTeX-table-label			"tab:"
-      LaTeX-section-label		"sec:")
+;; (setq TeX-japanese-process-input-coding-system  'japanese-iso-8bit
+;;       TeX-japanese-process-output-coding-system 'iso-2022-jp
+;;       LaTeX-version			"2e"
+;;       japanese-LaTeX-default-style	"jarticle"
+;;       TeX-default-mode			'japanese-latex-mode
+;;       TeX-force-default-mode		t
+;;       LaTeX-top-caption-list		'("table" "tabular")
+;;       TeX-command-default		"pLaTeX"
+;;       TeX-parse-self			t
+;;       japanese-LaTeX-command-default	"pLaTeX"
+;;       LaTeX-float			"tn"
+;;       LaTeX-figure-label		"fig:"
+;;       LaTeX-table-label			"tab:"
+;;       LaTeX-section-label		"sec:")
 (eval-after-load "auctex"
   '(when window-system
      (require 'font-latex)))
