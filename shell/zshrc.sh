@@ -91,9 +91,8 @@ $ "
     ;;
     esac
 
-    export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/project/camp/sim/proj-sap/bin
+    export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/project/camp/sim/proj-sap/bin:/usr/sbin
     echo -n '[31m'
-    /usr/bin/quota -q
     echo -n '[00m'
     
     # ls color

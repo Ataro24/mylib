@@ -1,3 +1,7 @@
+;;;elispプログラムを置くところへパスを通す
+(setq load-path (cons "~/mylib/emacs/" load-path))
+
+
 (defvar matlab:current-system
   (nth 2 (split-string system-configuration "-")))
 
@@ -28,32 +32,46 @@
 (set-buffer-file-coding-system	'utf-8)
 (set-terminal-coding-system	'utf-8)
 (setq default-file-name-coding-system 'utf-8)
+(setq auto-coding-functions nil)
 
 ;;;
 ;;; Japanese Input Method
 ;;;
 ;; Anthy 
 ;;
-(when (string-match "linux" system-configuration)
- (load-library "anthy")
- (or 
-  (and (assoc "japanese-egg-anthy" input-method-alist)	; egg-anthy
-	(require 'egg)
-	(setq enable-double-n-syntax		t)
-	(setq egg-conversion-wrap-select	t
-	      egg-conversion-auto-candidate-menu 2)
-	(setq default-input-method "japanese-egg-anthy"))
-  (and (assoc "japanese-anthy" input-method-alist)	; anthy
-	(setq default-input-method 'japanese-anthy))))
+;; (when (string-match "linux" system-configuration)
+;;  (load-library "anthy")
+;;  (or 
+;;   (and (assoc "japanese-egg-anthy" input-method-alist)	; egg-anthy
+;; 	(require 'egg)
+;; 	(setq enable-double-n-syntax		t)
+;; 	(setq egg-conversion-wrap-select	t
+;; 	      egg-conversion-auto-candidate-menu 2)
+;; 	(setq default-input-method "japanese-egg-anthy"))
+;;   (and (assoc "japanese-anthy" input-method-alist)	; anthy
+;; 	(setq default-input-method 'japanese-anthy))))
 ;;anthyのタイムアウト時間を短くする
-(load-library "anthy")
-(if (>= emacs-major-version 23)
-   (setq anthy-accept-timeout 1))  
+;; (load-library "anthy")
+;; (if (>= emacs-major-version 23)
+;;    (setq anthy-accept-timeout 1))  
 
+;;ibus
+;; ibus-mozcを利用するためには ibus-elをインストールしておく必要有り
+(require 'ibus)
+(add-hook 'after-init-hook 'ibus-mode-on)
+;; Use C-SPC for Set Mark command
+(ibus-define-common-key ?\C-\s nil)
+;; Use C-/ for Undo command
+(ibus-define-common-key ?\C-/ nil)
+;; Change cursor color depending on IBus status
+(setq ibus-cursor-color '("limegreen" "white" "blue"))
+(global-set-key [?\S-\ ] 'ibus-toggle)
 
+;; mozc
+(require 'mozc)
+(set-language-environment "Japanese")
+(setq default-input-method "japanese-mozc")
 
-;;;elispプログラムを置くところへパスを通す
-(setq load-path (cons "~/elisp" load-path))
 
 
 ;;;
@@ -91,20 +109,20 @@
 ;;;
 (if (locate-library "auctex")
     (load "auctex.el" nil t t))
-(setq TeX-japanese-process-input-coding-system  'japanese-iso-8bit
-      TeX-japanese-process-output-coding-system 'iso-2022-jp
-      LaTeX-version			"2e"
-      japanese-LaTeX-default-style	"jarticle"
-      TeX-default-mode			'japanese-latex-mode
-      TeX-force-default-mode		t
-      LaTeX-top-caption-list		'("table" "tabular")
-      TeX-command-default		"pLaTeX"
-      TeX-parse-self			t
-      japanese-LaTeX-command-default	"pLaTeX"
-      LaTeX-float			"tn"
-      LaTeX-figure-label		"fig:"
-      LaTeX-table-label			"tab:"
-      LaTeX-section-label		"sec:")
+;; (setq TeX-japanese-process-input-coding-system  'japanese-iso-8bit
+;;       TeX-japanese-process-output-coding-system 'iso-2022-jp
+;;       LaTeX-version			"2e"
+;;       japanese-LaTeX-default-style	"jarticle"
+;;       TeX-default-mode			'japanese-latex-mode
+;;       TeX-force-default-mode		t
+;;       LaTeX-top-caption-list		'("table" "tabular")
+;;       TeX-command-default		"pLaTeX"
+;;       TeX-parse-self			t
+;;       japanese-LaTeX-command-default	"pLaTeX"
+;;       LaTeX-float			"tn"
+;;       LaTeX-figure-label		"fig:"
+;;       LaTeX-table-label			"tab:"
+;;       LaTeX-section-label		"sec:")
 (eval-after-load "auctex"
   '(when window-system
      (require 'font-latex)))
@@ -175,7 +193,7 @@
 ;;; SEMI (for wl etc)
 (setq mail-self-blind		t
       mime-edit-split-message   nil
-      mime-header-accept-quoted-encoded-words t
+      Mime-header-accept-quoted-encoded-words t
       mime-view-ignored-field-list
       '(".*Received:" ".*Path:" ".*Id:" "^References:"
         "^Replied:" "^Errors-To:" "^Lines:" ".*Host:" "^Xref:"
@@ -194,8 +212,8 @@
 ;;;
 ;;; tramp
 ;;;
-;; (if (locate-library "tramp")
-;;    (require 'tramp))
+(if (locate-library "tramp")
+   (require 'tramp))
 
 ;;;
 ;;; emacsclient
@@ -222,7 +240,7 @@
 ;;
 (if (>= emacs-major-version 23)
       (progn
-	(setq load-path (cons "~/elisp/color-theme-6.6.0" load-path))
+	(setq load-path (cons "~/mylib/emacs/color-theme-6.6.0" load-path))
 	(require 'color-theme)
 	(color-theme-initialize)
 	(color-theme-dark-laptop)
@@ -234,19 +252,17 @@
 
 ;;compizとか使用時のemacsの透過具合
 (modify-all-frames-parameters 
- (list (cons 'alpha '(90 75 40 30))))
+ (list (cons 'alpha '(95 95 95 95))))
 
 
-; emacs23 用フォンと設定
-(cond ((string-match "^23\." emacs-version)
-       (cond (window-system
- ;            (set-default-font "DejaVu LGC Sans Mono-10:style=Bold")
-            (set-default-font "Source Code Pro-10")
-	      ;(set-default-font "M+1P+IPAG-11")
-              (set-fontset-font (frame-parameter nil 'font)
-	      	  'japanese-jisx0208
-                  '("うずらフォント" . "unicode-bmp"))
-))))
+; Emacs23 用フォンと設定
+;; (cond ((string-match "^23\." emacs-version)
+(cond (window-system
+       (set-default-font "Source Code Pro-10")
+       (set-fontset-font (frame-parameter nil 'font)
+			 'japanese-jisx0208
+			 '("うずらフォント" . "unicode-bmp"))
+));)				
 ;; 新規フレームのデフォルト設定
 ;;フォントの設定より後ろに書く必要アリ
 (modify-all-frames-parameters (list (assq 'font (frame-parameters))))
@@ -401,6 +417,29 @@ Return its components if so, nil otherwise."
 			     (if (not (null buffer-file-name))
 				 (flymake-mode t))))
 
+;(setq flymake-run-in-place nil);trampの時は無効に
+;; flymake を使えない場合をチェック
+(defadvice flymake-can-syntax-check-file
+  (after my-flymake-can-syntax-check-file activate)
+  (cond
+   ((not ad-return-value))
+   ;; tramp 経由であれば、無効
+   ((and (fboundp 'tramp-list-remote-buffers)
+         (memq (current-buffer) (tramp-list-remote-buffers)))
+    (setq ad-return-value nil))
+   ;; 書き込み不可ならば、flymakeは無効
+   ((not (file-writable-p buffer-file-name))
+    (setq ad-return-value nil))
+   ;; flymake で使われるコマンドが無ければ無効
+   ((let ((cmd (nth 0 (prog1
+                          (funcall (flymake-get-init-function buffer-file-name))
+                        (funcall (flymake-get-cleanup-function buffer-file-name))))))
+      (and cmd (not (executable-find cmd))))
+    (setq ad-return-value nil))
+   ))
+
+
+
 ;;
 ;; Evernote-mode
 ;;
@@ -507,6 +546,7 @@ Return its components if so, nil otherwise."
 (setq howm-menu-refresh-after-save nil)
 ;; 下線を引き直さない
 (setq howm-refresh-after-save nil)
+
 ;;=================== howmここまで ============================
 
 
@@ -516,4 +556,79 @@ Return its components if so, nil otherwise."
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
-(add-hook 'org-mode-hook 'turn-on-font-lock);org-modeのバッファはfont-lock-mode
+(add-hook 'org-mode-hook 'turn-on-font-lock);org-modeのバッファはfont-lock-mode`
+
+;;============== emacs-nav ==============
+;emacs用のファイルブラウザ
+(add-to-list 'load-path "~/mylib/emacs/emacs-nav-49")
+(require 'nav)
+(setq nav-split-window-direction 'vertical) ;; 分割したフレームを垂直に並べる
+(global-set-key "\C-x\C-d" 'nav-toggle)     ;; C-x C-d で nav をトグル
+; ?を打つとヘルプがでる
+
+
+;;
+;;=========================Web系============================
+;;
+;; php-mode
+;;
+(autoload 'php-mode "php-mode")
+(setq auto-mode-alist
+      (cons '("\\.php\\'" . php-mode) auto-mode-alist))
+(setq php-mode-force-pear t)
+(add-hook 'php-mode-user-hook
+  '(lambda ()
+     (setq php-manual-path "~/Downloads/php-chunked-xhtml");phpマニュアルへのパス
+     (setq php-manual-url "http://www.phppro.jp/phpmanual/")
+     (setq tab-width 2)
+     (setq indent-tabs-mode t))
+)
+;;
+;; CSS editing mode
+;; cssの色付け、タブによるプロパティ名の補完
+(autoload 'css-mode "css-mode")
+(setq auto-mode-alist
+      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
+(setq cssm-indent-function #'cssm-c-style-indenter)
+;;
+;; javascript mode
+;;
+(add-to-list 'auto-mode-alist (cons "\\.js\\'" 'javascript-mode))
+(autoload 'javascript-mode "javascript" nil t)
+(setq js-indent-level 4)
+;;
+;; MMM mode
+;;
+;;
+;;mmm-modeはversion24以降しか使えない
+(if (>= emacs-major-version 24)
+      (progn
+(add-to-list 'load-path "~/mylib/emacs/mmm-mode-0.5.1")
+(require 'mmm-mode)
+(setq mmm-global-mode 'maybe)
+(set-face-background 'mmm-default-submode-face nil)
+;; for php-mode in html-helper-mode
+(mmm-add-mode-ext-class nil "\\.php?\\'" 'html-php)
+(mmm-add-classes
+  '((html-php
+  :submode php-mode
+  :front "<\\?\\(php\\)?"
+  :back "\\?>")))
+  (add-to-list 'auto-mode-alist '("\\.php?\\'" . html-helper-mode))
+	)
+)
+
+(defvar html-helper-new-buffer-template
+  '("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
+    "<html>\n"
+    "<head>\n"
+    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
+    "<title>" p "</title>\n"
+    "<link rel=\"stylesheet\"  href=\"\" type=\"text/css\">\n"
+    "<script type=\"text/javascript\" src=\"\"></script>\n"
+    "</head>\n"
+    "<body>\n"
+    "\n</body>\n</html>\n")
+  "*Template for new buffers, inserted by html-helper-insert-new-buffer-strings if
+html-helper-build-new-buffer is set to t")
+

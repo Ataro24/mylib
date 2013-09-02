@@ -1,6 +1,3 @@
-XTerm*ScrollBar: false
-XTerm*foreground: blue
-Emacs.FontBackend: xft
 Emacs*useXIM: false
 Emacs23*useXIM: false
 
