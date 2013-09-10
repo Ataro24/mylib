@@ -6,10 +6,7 @@ export EDITOR="vi"
 
 export TEXMFHOME=~/texmf	# dont set TEXINPUTS
 export BIBCITEDIR=${TEXMFHOME}/bibtex/bib
-
-export CVSROOT=/project/camp/cvs # solaris user
-#export CVSROOT=camp:/project/camp/cvs  # for camp group
-#export CVS_RSH=ssh
+export LANG=ja_JP.UTF-8
 
 #
 # aliases
@@ -20,7 +17,7 @@ alias la='ls -A'
 alias ll='ls -l'
 alias lla='ls -l -A'
 alias du='du -hk'
-#alias grep='grep --color'
+alias grep='grep --color'
 #alias egrep='egrep --color'
 
 set -o noclobber		# no overwrite when redirect
@@ -59,9 +56,6 @@ setopt csh_null_glob
 setopt extended_glob
 unsetopt flow_control           # disable stop=^s and start=^q
 setopt glob_dots
-setopt hist_ignore_dups
-setopt hist_ignore_space
-setopt hist_reduce_blanks
 setopt interactive_comments
 setopt list_ambiguous
 setopt list_types
@@ -91,12 +85,12 @@ $ "
     ;;
     esac
 
-    export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/project/camp/sim/proj-sap/bin:/usr/sbin
+    export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/usr/sbin
     echo -n '[31m'
     echo -n '[00m'
     
     # ls color
-    alias ls='ls -F --color'
+    alias ls='ls -F --color -G'
     ;;
 
 solaris*)
@@ -167,14 +161,11 @@ alias rmast='rm *~'
 alias rmdast='rm .*~'
 
 alias cp='nocorrect cp -ir'
-alias grep='nocorrect grep'
+#alias grep='nocorrect grep'
 alias ln='nocorrect ln'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv -i'
 alias setus='setxkbmap us'
-
-#alias emacs='emacs23'
-#alias emacsc='emacsclient23 -t'
 
 alias viz='vi ~/.zshrc'
 alias emz='emacs ~/.zshrc'
@@ -188,7 +179,6 @@ alias dccs='/opt/SUNWuttsc/bin/uttsc -g 1200x900 cs-dc.cs.nitech.ac.jp'
 alias dvipdf='dvipdfmx -d 5'
 
 alias -g l='| $PAGER'
-#alias -g g='| grep'
 
 alias -g ...='../..'
 alias -g ....='../../..'
@@ -209,7 +199,13 @@ export PATH=/opt/openoffice.org3/program:$PATH
 # terminal command overlap
 #
 export HISTCONTROL=ignoreboth
-
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=20000
+setopt share_history
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
 
 #
 # zstyles
@@ -241,75 +237,20 @@ export LS_COLORS='di=01;34'
 #xmodmap -e 'keycode 64 = Alt_L Meta_L'
 #xmodmap -eps G 64
 
-#PATH=$PATH:~yasui/bin/
-#itazura
-#alias ls="itazura-ls"
-#alias cd="echo 'rm -rf /'"
 
+#
+# Git 周り
+#
 alias gitgraph="git log --graph --all --color  --pretty='%x09%h %cn%x09%s %Cred%d%Creset'"
 
-# autoload -Uz vcs_info
-# zstyle ':vcs_info:*' enable git
-# autoload -Uz is-at-least
-# if is-at-least 4.3.10; then
-#     zstyle ':vcs_info:*' check-for-changes true
-#     zstyle ':vcs_info:*' formats '%R' '%S' '%b' '%s' '%c' '%u'
-#     zstyle ':vcs_info:*' actionformats '%R' '%S' '%b|%a' '%s' '%c' '%u'
-# fi
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' formats '[%b]'
+zstyle ':vcs_info:*' actionformats '[%b|%a]'
+precmd () {
+    psvar=()
+    LANG=en_US.UTF-8 vcs_info
+    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
 
-# # zshのPTOMPTに渡す文字列は、可読性がそんなに良くなくて、読み書きしたり、つまりデバッグが
-# # 大変なため、文字列を組み立てるのは関数でやることにする。
-# # そのほうが分岐などを追加するのが楽。
-# # この先、追加で表示させたい情報はいろいろでてくるとおもうし。
-
-# autoload -Uz vcs_info
-# zstyle ':vcs_info:*' enable git 
-
-# # 下のformatsの値をそれぞれの変数に入れてくれる機能の、変数の数の最大。
-# # デフォルトだと2くらいなので、指定しておかないと、下のformatsがほぼ動かない。
-# zstyle ':vcs_info:*' max-exports 7
-
-# # 左から順番に、vcs_info_msg_{n}_ という名前の変数に格納されるので、下で利用する
-# zstyle ':vcs_info:*' formats '%R' '%S' '%b' '%s'
-# # 状態が特殊な場合のformats
-# zstyle ':vcs_info:*' actionformats '%R' '%S' '%b|%a' '%s'
-
-# # 4.3.10以上の場合は、check-for-changesという機能を使う。
-# function echo_rprompt () {
-#     local repos branch st color
-
-#     STY= LANG=en_US.UTF-8 vcs_info
-#     if [[ -n "$vcs_info_msg_1_" ]]; then
-#         # -Dつけて、~とかに変換
-#         repos=`print -nD "$vcs_info_msg_0_"`
-
-#         # if [[ -n "$vcs_info_msg_2_" ]]; then
-#             branch="$vcs_info_msg_2_"
-#         # else
-#         #     branch=$(basename "`git symbolic-ref HEAD 2> /dev/null`")
-#         # fi
-
-#         if [[ -n "$vcs_info_msg_4_" ]]; then # staged
-#             branch="%F{green}$branch%f"
-#         elif [[ -n "$vcs_info_msg_5_" ]]; then # unstaged
-#             branch="%F{red}$branch%f"
-#         else
-#             branch="%F{blue}$branch%f"
-#         fi
-
-#         print -n "[%25<..<"
-#         print -n "%F{yellow}$vcs_info_msg_1_%F"
-#         print -n "%<<]"
-
-#         print -n "[%15<..<"
-#         print -nD "%F{yellow}$repos%f"
-#         print -n "@$branch"
-#         print -n "%<<]"
-
-#     else
-#         print -nD "[%F{yellow}%60<..<%~%<<%f]"
-#     fi
-# }
-
-# setopt prompt_subst
-# RPROMPT='`echo_rprompt`'
+# バージョン管理されているディレクトリにいれば表示，そうでなければ非表示
+RPROMPT="%1(v|%F{green}%1v%f|)"
