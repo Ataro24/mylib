@@ -27,13 +27,6 @@
 ;;;
 (set-language-environment "Japanese")
 
-;;; coding system
-(set-default-coding-systems	'utf-8)
-(set-buffer-file-coding-system	'utf-8)
-(set-terminal-coding-system	'utf-8)
-(setq default-file-name-coding-system 'utf-8)
-(setq auto-coding-functions nil)
-
 ;;;
 ;;; Japanese Input Method
 ;;;
@@ -71,8 +64,6 @@
 (require 'mozc)
 (set-language-environment "Japanese")
 (setq default-input-method "japanese-mozc")
-
-
 
 ;;;
 ;;; highlight
@@ -596,39 +587,28 @@ Return its components if so, nil otherwise."
 (add-to-list 'auto-mode-alist (cons "\\.js\\'" 'javascript-mode))
 (autoload 'javascript-mode "javascript" nil t)
 (setq js-indent-level 4)
-;;
-;; MMM mode
-;;
-;;
-;;mmm-modeはversion24以降しか使えない
-(if (>= emacs-major-version 24)
-      (progn
-(add-to-list 'load-path "~/mylib/emacs/mmm-mode-0.5.1")
-(require 'mmm-mode)
-(setq mmm-global-mode 'maybe)
-(set-face-background 'mmm-default-submode-face nil)
-;; for php-mode in html-helper-mode
-(mmm-add-mode-ext-class nil "\\.php?\\'" 'html-php)
-(mmm-add-classes
-  '((html-php
-  :submode php-mode
-  :front "<\\?\\(php\\)?"
-  :back "\\?>")))
-  (add-to-list 'auto-mode-alist '("\\.php?\\'" . html-helper-mode))
-	)
-)
 
-(defvar html-helper-new-buffer-template
-  '("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
-    "<html>\n"
-    "<head>\n"
-    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
-    "<title>" p "</title>\n"
-    "<link rel=\"stylesheet\"  href=\"\" type=\"text/css\">\n"
-    "<script type=\"text/javascript\" src=\"\"></script>\n"
-    "</head>\n"
-    "<body>\n"
-    "\n</body>\n</html>\n")
-  "*Template for new buffers, inserted by html-helper-insert-new-buffer-strings if
-html-helper-build-new-buffer is set to t")
+;; ファイル名補完
+;; (require 'zlc)
+;; (zlc-mode t)
+;; (let ((map minibuffer-local-map))
+;;   ;;; like menu select
+;;   (define-key map (kbd "<down>")  'zlc-select-next-vertical)
+;;   (define-key map (kbd "<up>")    'zlc-select-previous-vertical)
+;;   (define-key map (kbd "<right>") 'zlc-select-next)
+;;   (define-key map (kbd "<left>")  'zlc-select-previous)
+
+;;   ;;; reset selection
+;;   (define-key map (kbd "C-c") 'zlc-reset)
+;;   )
+;;大文字小文字の区別をなくす
+(setq read-file-name-completion-ignore-case t)
+
+;;; coding system
+;;どこかで文字コードが上書きされてしまっているのでここで
+(set-default-coding-systems	'utf-8)
+(set-buffer-file-coding-system	'utf-8)
+(set-terminal-coding-system	'utf-8)
+(setq default-file-name-coding-system 'utf-8)
+(setq auto-coding-functions nil)
 
