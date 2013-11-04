@@ -75,8 +75,14 @@ case $OSTYPE in
 linux-gnu*)
     case $HOST in
     moco.matlab.nitech.ac.jp)
-    PROMPT="%n@"$'%{\e[$[44]m%}'"%m"$'\e[m'":%~/
+	    PROMPT="%n@"$'%{\e[$[44]m%}'"%m"$'\e[m'":%~/
 $ "	
+    ;;
+    flandre)
+	    PROMPT="%n@%U%B%F{yellow}%m%f%b%u":%~/$'\n$ '
+    ;;
+    patchouli)
+	    PROMPT="%n@%U%B%F{magenta}%m%f%b%u":%~/$'\n$ '
     ;;
 
     *)
