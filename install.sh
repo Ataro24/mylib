@@ -11,6 +11,11 @@ ln -i -s $MYLIB/shell/bashrc.sh $HOME/.bashrc
 ln -i -s $MYLIB/shell/zshrc.sh $HOME/.zshrc
 ## emacs
 ln -i -s $MYLIB/emacs/emacs.el $HOME/.emacs
+if [ ! -e $HOME/.emacsbacks ]; then
+    echo "$HOME/.emacsbacks not found."
+    mkdir $HOME/.emacsbacks
+    echo "   -> mkdir $HOME/.emacsbacks"
+fi
 ## vi
 ln -i -s $MYLIB/vim/vimrc $HOME/.vimrc
 ## screen, tmux
