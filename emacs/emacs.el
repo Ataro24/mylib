@@ -1,5 +1,5 @@
 ;;;elispプログラムを置くところへパスを通す
-(setq load-path (cons "~/mylib/emacs/" load-path))
+(setq load-path (cons "~/mylib/emacs/vender" load-path))
 
 
 (defvar matlab:current-system
@@ -231,7 +231,7 @@
 ;;
 (if (>= emacs-major-version 23)
       (progn
-	(setq load-path (cons "~/mylib/emacs/color-theme-6.6.0" load-path))
+	(setq load-path (cons "~/mylib/emacs/vender/color-theme-6.6.0" load-path))
 	(require 'color-theme)
 	(color-theme-initialize)
 	(color-theme-dark-laptop)
@@ -551,7 +551,7 @@ Return its components if so, nil otherwise."
 
 ;;============== emacs-nav ==============
 ;emacs用のファイルブラウザ
-(add-to-list 'load-path "~/mylib/emacs/emacs-nav-49")
+(add-to-list 'load-path "~/mylib/emacs/vender/emacs-nav-49")
 (require 'nav)
 (setq nav-split-window-direction 'vertical) ;; 分割したフレームを垂直に並べる
 (global-set-key "\C-x\C-d" 'nav-toggle)     ;; C-x C-d で nav をトグル
@@ -588,19 +588,6 @@ Return its components if so, nil otherwise."
 (autoload 'javascript-mode "javascript" nil t)
 (setq js-indent-level 4)
 
-;; ファイル名補完
-;; (require 'zlc)
-;; (zlc-mode t)
-;; (let ((map minibuffer-local-map))
-;;   ;;; like menu select
-;;   (define-key map (kbd "<down>")  'zlc-select-next-vertical)
-;;   (define-key map (kbd "<up>")    'zlc-select-previous-vertical)
-;;   (define-key map (kbd "<right>") 'zlc-select-next)
-;;   (define-key map (kbd "<left>")  'zlc-select-previous)
-
-;;   ;;; reset selection
-;;   (define-key map (kbd "C-c") 'zlc-reset)
-;;   )
 ;;大文字小文字の区別をなくす
 (setq read-file-name-completion-ignore-case t)
 
