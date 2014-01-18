@@ -65,6 +65,9 @@
 (set-language-environment "Japanese")
 (setq default-input-method "japanese-mozc")
 
+;;;行番号
+(global-linum-mode t)
+
 ;;;
 ;;; highlight
 ;;;
