@@ -14,26 +14,23 @@ export LANG=ja_JP.UTF-8
 
 #alias ls='ls -F'
 alias la='ls -A'
-alias ll='ls -l'
-alias lla='ls -l -A'
+alias ll='ls -lh'
+alias lla='ls -lh -A'
 alias du='du -hk'
 alias grep='grep --color'
 #alias egrep='egrep --color'
 
-set -o noclobber		# no overwrite when redirect
+# リダイレクトの際に上書きしない
+set -o noclobber	
 
 # user file-creation mask
 umask 022
 
-#
-# zsh gadgets
-#
-autoload -U compinit
+# 補完を有効に
+autoload -Uz compinit
 compinit
 
-# autoload predict-on
-# predict-on
-
+# emacs風キーバインド
 bindkey -e
 bindkey ' ' magic-space
 
@@ -260,3 +257,4 @@ precmd () {
 
 # バージョン管理されているディレクトリにいれば表示，そうでなければ非表示
 RPROMPT="%1(v|%F{green}%1v%f|)"
+
