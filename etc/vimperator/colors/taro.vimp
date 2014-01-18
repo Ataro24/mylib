@@ -31,9 +31,9 @@ hi NonText            color:  crimson; min-height: 16px; padding-left: 2px; back
 hi CompTitle	      background: dimgray;
 hi CompTitle>*	      color:  white; font-weight: bold;
 
-hi CompGroup	      background: url("file:///home/yamada/Desktop/nekoso/ringo.jpg") no-repeat fixed 85% 30%; background-size: 60%;
+hi CompGroup	      background: url("file:///home/tatsu/mylib/etc/vimperator/pics/ringo.jpg") no-repeat fixed 85% 30%; background-size: 60%;
 "cover;
-hi CompItem	      background: url("file:///home/yamada/Desktop/nekoso/ringo.jpg") no-repeat fixed 85% 30%; background-size: 60%;
+hi CompItem	      background: url("file:///home/tatsu/mylib/etc/vimperator/pics/ringo.jpg") no-repeat fixed 85% 30%; background-size: 60%;
 "cover;
 
 hi CompItem[selected] color:  darkred;  background: rgba(255,0,0,0.30); font-weight: bold;
