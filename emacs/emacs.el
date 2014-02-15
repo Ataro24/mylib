@@ -1,15 +1,6 @@
 ;;;elispプログラムを置くところへパスを通す
 (setq load-path (cons "~/mylib/emacs/vender" load-path))
 
-
-(defvar matlab:current-system
-  (nth 2 (split-string system-configuration "-")))
-
-;;; switch variables
-(defvar matlab:use-mew		nil) ;; set this t to use Mew
-(defvar matlab:use-wl		nil) ;; set this t to use Wanderlust
-
-;;;
 ;;; Key customize
 ;;;
 (global-set-key [(control h)]	'delete-backward-char) ;バックスペース
@@ -30,7 +21,7 @@
 ;;;
 ;;; Japanese Input Method
 ;;;
-;; Anthy 
+;; Anthy
 ;;
 ;; (when (string-match "linux" system-configuration)
 ;;  (load-library "anthy")
@@ -99,20 +90,6 @@
 ;;;
 (if (locate-library "auctex")
     (load "auctex.el" nil t t))
-;; (setq TeX-japanese-process-input-coding-system  'japanese-iso-8bit
-;;       TeX-japanese-process-output-coding-system 'iso-2022-jp
-;;       LaTeX-version			"2e"
-;;       japanese-LaTeX-default-style	"jarticle"
-;;       TeX-default-mode			'japanese-latex-mode
-;;       TeX-force-default-mode		t
-;;       LaTeX-top-caption-list		'("table" "tabular")
-;;       TeX-command-default		"pLaTeX"
-;;       TeX-parse-self			t
-;;       japanese-LaTeX-command-default	"pLaTeX"
-;;       LaTeX-float			"tn"
-;;       LaTeX-figure-label		"fig:"
-;;       LaTeX-table-label			"tab:"
-;;       LaTeX-section-label		"sec:")
 (eval-after-load "auctex"
   '(when window-system
      (require 'font-latex)))
@@ -145,40 +122,6 @@
 ;;;
 (mwheel-install)
 (setq mouse-wheel-follow-mouse t)
-
-;;;
-;;; Message User Agent
-;;;
-;; Mew
-;;
-(when matlab:use-mew
-  (autoload 'mew	"mew" nil t)
-  (autoload 'mew-send	"mew" nil t)
-  (if (file-exists-p (expand-file-name "~/.mew.el"))
-    (load (expand-file-name "~/.mew.el") nil t nil))
-  )
-
-;; Wanderlust
-;;
-(when matlab:use-wl
-  (autoload 'wl		"wl" "wanderlust" t)
-  (setq smtp-local-domain	"matlab.nitech.ac.jp"
-	wl-smtp-posting-server	"mail"			;; smtp server
-	elmo-imap4-default-server	"mail"		;; imap server
-	wl-biff-check-folder-list	'("%inbox")
-	wl-from			(concat (user-login-name) "@matlab.nitech.ac.jp")
-	wl-message-id-domain	"matlab.nitech.ac.jp"
-	wl-use-ldap		t
-	wl-ldap-server		"mats.matlab.nitech.ac.jp"
-	wl-ldap-base		"dc=matlab,dc=nitech,dc=ac,dc=jp"
-	wl-draft-reply-buffer-style 'keep
-	wl-draft-folder		"..Draft"
-	wl-trash-folder		"..Trash"
-	wl-queue-folder		"..queue"
-	wl-interactive-send	t)
-  )
-(when (string-match "solaris" system-configuration)
-	(setq ldap-search-program-arguments '("-L" "-T")))
 
 ;;; SEMI (for wl etc)
 (setq mail-self-blind		t
