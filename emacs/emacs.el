@@ -92,10 +92,6 @@
 (setq hl-line-face 'hlline-face)
 ;;(setq hl-line-face 'underline) ;; under line 
 (global-hl-line-mode)
-;rubyで対応するendをハイライト
-(require 'ruby-block)
-(ruby-block-mode t)
-(setq ruby-block-highlight-toggle t)
 
 
 ;;;
@@ -285,6 +281,8 @@
 	"\.ipa"))
 
 
+
+
 ;;
 ;;バックアップファイルを~/.emacsbacksに吐かせる
 (setq make-backup-files t)
@@ -300,10 +298,80 @@
             (concat (expand-file-name backup-directory) 
                     "/" (file-name-nondirectory filename))
           (make-backup-file-name-original filename)))))
+;; バッファ名の識別文字列の拡張
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+
+;;大文字小文字の区別をなくす
+(setq read-file-name-completion-ignore-case t)
+
+;; ファイル名を変更できるようにする
+(require 'wdired)
+(define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
+
+;; 試す用のジャンクファイルを作成する
+(require 'open-junk-file)
+(setq open-junk-file-format "~/junk/%Y-%m-%d-%H%M%S.")
+
+;; 画面を3分割にする
+(defun split-window-vertically-n (num_wins)
+  (interactive "p")
+  (if (= num_wins 2)
+      (split-window-vertically)
+    (progn
+      (split-window-vertically
+       (- (window-height) (/ (window-height) num_wins)))
+      (split-window-vertically-n (- num_wins 1)))))
+(defun split-window-horizontally-n (num_wins)
+  (interactive "p")
+  (if (= num_wins 2)
+      (split-window-horizontally)
+    (progn
+      (split-window-horizontally
+       (- (window-width) (/ (window-width) num_wins)))
+      (split-window-horizontally-n (- num_wins 1)))))
+(global-set-key "\C-x@" '(lambda ()
+                           (interactive)
+                           (split-window-vertically-n 3)))
+(global-set-key "\C-x#" '(lambda ()
+                           (interactive)
+                           (split-window-horizontally-n 3)))
+
+;; ヘルプバッファ等をポップアップ表示にする
+(setq pop-up-windows nil)
+(require 'popwin nil t)
+(when (require 'popwin nil t)
+  (setq anything-samewindow nil)
+  (setq display-buffer-function 'popwin:display-buffer)
+  (push '("anything" :regexp t :height 0.5) popwin:special-display-config)
+  (push '("*Completions*" :height 0.4) popwin:special-display-config)
+  (push '("*compilation*" :height 0.4 :noselect t :stick t) popwin:special-display-config)
+  )
+
+;; 分割したwindow間を矢印キーで移動
+(global-set-key (kbd "C-x <left>")  'windmove-left)
+(global-set-key (kbd "C-x <down>")  'windmove-down)
+(global-set-key (kbd "C-x <up>")    'windmove-up)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+
+;; C-tでwindow分割 or 移動
+(defun other-window-or-split ()
+  (interactive)
+  (when (one-window-p)
+    (split-window-horizontally))
+  (other-window 1))
+(global-set-key (kbd "C-t") 'other-window-or-split)
+
 
 ;;
 ;;ruby
-;;
+;; 
+;; ruby-mode indent
+(setq ruby-deep-indent-paren-style nil)
+;rubyで対応するendをハイライト
+(require 'ruby-block)
+(ruby-block-mode t)
+(setq ruby-block-highlight-toggle t)
 (require 'ruby-electric)
 (add-hook 'ruby-mode-hook '(lambda () (ruby-electric-mode t)))
 (setq ruby-electric-expand-delimiters-list nil)
@@ -563,6 +631,10 @@ Return its components if so, nil otherwise."
 
 ;;
 ;;=========================Web系============================
+;; タブの設定
+(setq-default tab-width 4 indent-tabs-mode nil)
+(setq indent-line-function 'insert-tab)
+
 ;;
 ;; php-mode
 ;;
@@ -574,9 +646,22 @@ Return its components if so, nil otherwise."
   '(lambda ()
      (setq php-manual-path "~/Downloads/php-chunked-xhtml");phpマニュアルへのパス
      (setq php-manual-url "http://www.phppro.jp/phpmanual/")
-     (setq tab-width 2)
-     (setq indent-tabs-mode t))
-)
+;     (setq tab-width 2)
+ ;    (setq indent-tabs-mode t)
+))
+;;php-modeでのarray後のインデント位置の変更
+(add-hook 'php-mode-hook (lambda ()
+    (defun ywb-php-lineup-arglist-intro (langelem)
+      (save-excursion
+        (goto-char (cdr langelem))
+        (vector (+ (current-column) c-basic-offset))))
+    (defun ywb-php-lineup-arglist-close (langelem)
+      (save-excursion
+        (goto-char (cdr langelem))
+        (vector (current-column))))
+    (c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
+    (c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
+
 ;;
 ;; CSS editing mode
 ;; cssの色付け、タブによるプロパティ名の補完
@@ -584,15 +669,38 @@ Return its components if so, nil otherwise."
 (setq auto-mode-alist
       (cons '("\\.css\\'" . css-mode) auto-mode-alist))
 (setq cssm-indent-function #'cssm-c-style-indenter)
+
 ;;
 ;; javascript mode
 ;;
-(add-to-list 'auto-mode-alist (cons "\\.js\\'" 'javascript-mode))
-(autoload 'javascript-mode "javascript" nil t)
-(setq js-indent-level 4)
+;; (add-to-list 'auto-mode-alist (cons "\\.js\\'" 'javascript-mode))
+;; (autoload 'javascript-mode "javascript" nil t)
+;; (setq js-indent-level 4)
 
-;;大文字小文字の区別をなくす
-(setq read-file-name-completion-ignore-case t)
+;;
+;; js2-mode
+;;
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.\\(js\\|json\\)$" . js2-mode))
+(add-hook 'js2-mode-hook
+          '(lambda ()
+             (setq js2-basic-offset 2)))
+(setq js-indent-level 2)
+
+;;tplファイルを開いたらhtml-modeに
+(add-to-list 'auto-mode-alist (cons "\\.tpl\\'" 'html-mode))
+(add-to-list 'auto-mode-alist (cons "\\.html\\'" 'html-mode))
+
+;;末尾の半角スペースとタブを表示
+(defface my-face-u-1 '((t (:foreground "SteelBlue" :underline t))) nil)
+(defvar my-face-u-1 'my-face-u-1)
+(defadvice font-lock-mode (before my-font-lock-mode ())
+(font-lock-add-keywords major-mode '(("[ \t]+$" 0 my-face-u-1 append))))
+(ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
+(ad-activate 'font-lock-mode)
+(add-hook 'find-file-hooks '(lambda ()
+ (if font-lock-mode nil (font-lock-mode t))
+) t)
 
 ;;; coding system
 ;;どこかで文字コードが上書きされてしまっているのでここで
@@ -601,4 +709,3 @@ Return its components if so, nil otherwise."
 (set-terminal-coding-system	'utf-8)
 (setq default-file-name-coding-system 'utf-8)
 (setq auto-coding-functions nil)
-
