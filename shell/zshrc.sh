@@ -17,10 +17,10 @@ alias la='ls -A'
 alias ll='ls -lh'
 alias lla='ls -lh -A'
 alias du='du -hk'
-alias grep='grep --color'
+alias grep='grep --no-message --color'
 
 # リダイレクトの際に上書きしない
-set -o noclobber	
+set -o noclobber
 
 # user file-creation mask
 umask 022
@@ -76,12 +76,17 @@ linux-gnu*)
     flandre | kirisame)
 	    PROMPT="%n@%U%B%F{yellow}%m%f%b%u":%~/$'\n$ '
     ;;
-    patchouli | fastener)
-	    PROMPT="%n@%U%B%F{magenta}%m%f%b%u":%~/$'\n$ '
+    patchouli | fastener | kamineko)
+        PROMPT="%n@%U%B%F{magenta}%m%f%b%u":%~/$'\n$ '
+    ;;
+    kuroneko)
+        PROMPT="%n@%U%B%F{blue}%m%f%b%u":%~/$'\n$ '
+    ;;
+    shironeko)
+	    PROMPT="%n@%U%B%F{cyan}%m%f%b%u":%~/$'\n$ '
     ;;
     *)
-	    PROMPT="%n@"$'%{\e[$[42]m%}'"%m"$'\e[m'":%~/
-$ "
+	    PROMPT="%n@%U%B%F{green}%m%f%b%u":%~/$'\n$ '
     ;;
     esac
     export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin
