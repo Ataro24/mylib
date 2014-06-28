@@ -17,10 +17,10 @@ alias la='ls -A'
 alias ll='ls -lh'
 alias lla='ls -lh -A'
 alias du='du -hk'
-alias grep='grep --color'
+alias grep='grep --no-message --color'
 
 # リダイレクトの際に上書きしない
-set -o noclobber	
+set -o noclobber
 
 # user file-creation mask
 umask 022
@@ -98,6 +98,9 @@ alias ln='nocorrect ln'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv -i'
 alias setus='setxkbmap us'
+alias vim='nocorrect vim'
+alias ssh='nocorrect ssh'
+alias git='nocorrect git'
 
 alias dvipdf='dvipdfmx -d 5'
 alias gitgraph="git log --graph --all --color  --pretty='%x09%h %cn%x09%s %Cred%d%Creset'"
@@ -151,3 +154,4 @@ RPROMPT="%1(v|%F{green}%1v%f|)"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+alias gofluent='/usr/lib/fluent/ruby/lib/ruby/gems/1.9.1/gems/'
