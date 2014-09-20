@@ -33,3 +33,6 @@ linux-gnu*)
     ;;
 esac
 export LS_COLORS='di=01;34;40'
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+

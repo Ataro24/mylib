@@ -103,6 +103,9 @@ alias ln='nocorrect ln'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv -i'
 alias setus='setxkbmap us'
+alias vim='nocorrect vim'
+alias ssh='nocorrect ssh'
+alias git='nocorrect git'
 
 alias dvipdf='dvipdfmx -d 5'
 alias gitgraph="git log --graph --all --color  --pretty='%x09%h %cn%x09%s %Cred%d%Creset'"
@@ -152,3 +155,8 @@ precmd () {
 }
 # バージョン管理されているディレクトリにいれば表示，そうでなければ非表示
 RPROMPT="%1(v|%F{green}%1v%f|)"
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+alias gofluent='/usr/lib/fluent/ruby/lib/ruby/gems/1.9.1/gems/'
