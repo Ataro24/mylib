@@ -12,16 +12,20 @@ export CVSROOT=/project/camp/cvs # solaris user
 #export CVS_RSH=ssh
 
 #
-# aliases
+# util aliases
 #
-
-#alias ls='ls -F'
 alias la='ls -A'
 alias ll='ls -l'
 alias lla='ls -l -A'
 alias du='du -hk'
-#alias grep='grep --color'
-#alias egrep='egrep --color'
+
+alias grep='nocorrect grep --no-message --color'
+alias cp='nocorrect cp -ir'
+alias ln='nocorrect ln'
+alias mkdir='nocorrect mkdir'
+alias mv='nocorrect mv -i'
+alias setus='setxkbmap us'
+alias gitgraph="git log --graph --all --color  --pretty='%x09%h %cn%x09%s %Cred%d%Creset'"
 
 set -o noclobber		# no overwrite when redirect
 
@@ -74,28 +78,39 @@ setopt rc_expand_param
 
 limit -h coredumpsize 0
 
-#
-# PATH
-#
+
+# git
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' formats '%b'
+zstyle ':vcs_info:*' actionformats '%b|%a'
+precmd () {
+    psvar=()
+    LANG=en_US.UTF-8 vcs_info
+    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
 case $OSTYPE in
 linux-gnu*)
     case $HOST in
-    #moco.matlab.nitech.ac.jp)
-    fastener)
-    PROMPT="%n@"$'%{\e[$[44]m%}'"%m"$'\e[m'":%~/
-$ "	
+    flandre | kirisame)
+	prompt_color=yellow
+    ;;
+    patchouli | fastener | kamineko)
+	prompt_color=magenta
+    ;;
+    kuroneko)
+	prompt_color=blue
+    ;;
+    shironeko)
+	prompt_color=cyan
     ;;
 
     *)
-    PROMPT="%n@"$'%{\e[$[42]m%}'"%m"$'\e[m'":%~/
-$ "
+	prompt_color=cyan
     ;;
     esac
 
-    export PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin:/project/camp/sim/proj-sap/bin:/usr/bin
-    echo -n '[31m'
-    echo -n '[00m'
-    
+    PROMPT="%n@%U%B%F{${prompt_color}}%m%f%b%u -%1(v|%F{green}[%1v]%f|)":%~/$'\n$ '
+    export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin
     # ls color
     alias ls='ls -F --color'
     ;;
@@ -152,59 +167,6 @@ $ "
     ;;
 esac
 
-#=========================================================
-# Customise
-#=========================================================
-
-#
-# Alias
-#
-
-#alias asm='asm a.asm | sr'
-#alias rmparent='rm ~/.mozilla/firefox/yan07onf.default/.parentlock'
-
-alias rmast='rm *~'
-alias rmdast='rm .*~'
-
-alias cp='nocorrect cp -ir'
-alias grep='nocorrect grep'
-alias ln='nocorrect ln'
-alias mkdir='nocorrect mkdir'
-alias mv='nocorrect mv -i'
-alias setus='setxkbmap us'
-
-#alias emacs='emacs23'
-#alias emacsc='emacsclient23 -t'
-
-alias viz='vi ~/.zshrc'
-alias emz='emacs ~/.zshrc'
-alias emcz='emacsc ~/.zshrc'
-alias setz='source ~/.zshrc'
-
-alias rdesktop='rdesktop -a 16 -g 1268x940'
-alias uttsc='/opt/SUNWuttsc/bin/uttsc -g 1268x940'
-alias dccs='/opt/SUNWuttsc/bin/uttsc -g 1200x900 cs-dc.cs.nitech.ac.jp'
-
-alias dvipdf='dvipdfmx -d 5'
-
-alias -g l='| $PAGER'
-#alias -g g='| grep'
-
-alias -g ...='../..'
-alias -g ....='../../..'
-
-
-#alias emacs='TERM=xterm-256color emacs'
-
-#alias xine='xine --auto-play --auto-scan dvd'
-
-#
-# PATH
-#
-#export PATH=/usr/local/teTeX/bin:$PATH    # sh/bash ユーザの場合
-export PATH=/opt/openoffice.org3/program:$PATH
-#export PATH=/home/ikegaya/b4/compiler/p1/bin:$PATH
-
 #
 # terminal command overlap
 #
@@ -216,6 +178,8 @@ export HISTCONTROL=ignoreboth
 #
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
 #
 # for command-line(C-w)
 #
@@ -232,84 +196,10 @@ zstyle ':completion:*:rdesktop:*' sort false
 
 export LS_COLORS='di=01;34'
 
-
 #
-#キーボード設定
+# rbenvがあれば有効化
 #
-#setxkbmap us
-#xmodmap -eps G 64
-#xmodmap -e 'keycode 64 = Alt_L Meta_L'
-#xmodmap -eps G 64
-
-#PATH=$PATH:~yasui/bin/
-#itazura
-#alias ls="itazura-ls"
-#alias cd="echo 'rm -rf /'"
-
-alias gitgraph="git log --graph --all --color  --pretty='%x09%h %cn%x09%s %Cred%d%Creset'"
-
-# autoload -Uz vcs_info
-# zstyle ':vcs_info:*' enable git
-# autoload -Uz is-at-least
-# if is-at-least 4.3.10; then
-#     zstyle ':vcs_info:*' check-for-changes true
-#     zstyle ':vcs_info:*' formats '%R' '%S' '%b' '%s' '%c' '%u'
-#     zstyle ':vcs_info:*' actionformats '%R' '%S' '%b|%a' '%s' '%c' '%u'
-# fi
-
-# # zshのPTOMPTに渡す文字列は、可読性がそんなに良くなくて、読み書きしたり、つまりデバッグが
-# # 大変なため、文字列を組み立てるのは関数でやることにする。
-# # そのほうが分岐などを追加するのが楽。
-# # この先、追加で表示させたい情報はいろいろでてくるとおもうし。
-
-# autoload -Uz vcs_info
-# zstyle ':vcs_info:*' enable git 
-
-# # 下のformatsの値をそれぞれの変数に入れてくれる機能の、変数の数の最大。
-# # デフォルトだと2くらいなので、指定しておかないと、下のformatsがほぼ動かない。
-# zstyle ':vcs_info:*' max-exports 7
-
-# # 左から順番に、vcs_info_msg_{n}_ という名前の変数に格納されるので、下で利用する
-# zstyle ':vcs_info:*' formats '%R' '%S' '%b' '%s'
-# # 状態が特殊な場合のformats
-# zstyle ':vcs_info:*' actionformats '%R' '%S' '%b|%a' '%s'
-
-# # 4.3.10以上の場合は、check-for-changesという機能を使う。
-# function echo_rprompt () {
-#     local repos branch st color
-
-#     STY= LANG=en_US.UTF-8 vcs_info
-#     if [[ -n "$vcs_info_msg_1_" ]]; then
-#         # -Dつけて、~とかに変換
-#         repos=`print -nD "$vcs_info_msg_0_"`
-
-#         # if [[ -n "$vcs_info_msg_2_" ]]; then
-#             branch="$vcs_info_msg_2_"
-#         # else
-#         #     branch=$(basename "`git symbolic-ref HEAD 2> /dev/null`")
-#         # fi
-
-#         if [[ -n "$vcs_info_msg_4_" ]]; then # staged
-#             branch="%F{green}$branch%f"
-#         elif [[ -n "$vcs_info_msg_5_" ]]; then # unstaged
-#             branch="%F{red}$branch%f"
-#         else
-#             branch="%F{blue}$branch%f"
-#         fi
-
-#         print -n "[%25<..<"
-#         print -n "%F{yellow}$vcs_info_msg_1_%F"
-#         print -n "%<<]"
-
-#         print -n "[%15<..<"
-#         print -nD "%F{yellow}$repos%f"
-#         print -n "@$branch"
-#         print -n "%<<]"
-
-#     else
-#         print -nD "[%F{yellow}%60<..<%~%<<%f]"
-#     fi
-# }
-
-# setopt prompt_subst
-# RPROMPT='`echo_rprompt`'
+if [ -e $HOME/.rbenv ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
