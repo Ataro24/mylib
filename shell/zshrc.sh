@@ -9,15 +9,20 @@ export BIBCITEDIR=${TEXMFHOME}/bibtex/bib
 export LANG=ja_JP.UTF-8
 
 #
-# aliases
+# util aliases
 #
-
-#alias ls='ls -F'
 alias la='ls -A'
 alias ll='ls -lh'
 alias lla='ls -lh -A'
 alias du='du -hk'
-alias grep='grep --no-message --color'
+alias grep='nocorrect grep --no-message --color'
+alias cp='nocorrect cp -ir'
+alias ln='nocorrect ln'
+alias mkdir='nocorrect mkdir'
+alias mv='nocorrect mv -i'
+alias setus='setxkbmap us'
+alias gitgraph="git log --graph --all --color  --pretty='%x09%h %cn%x09%s %Cred%d%Creset'"
+
 
 # リダイレクトの際に上書きしない
 set -o noclobber
@@ -67,49 +72,43 @@ setopt rc_expand_param
 
 limit -h coredumpsize 0
 
-#
-# PATH
-#
+
+# git
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' formats '%b'
+zstyle ':vcs_info:*' actionformats '%b|%a'
+precmd () {
+    psvar=()
+    LANG=en_US.UTF-8 vcs_info
+    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
 case $OSTYPE in
 linux-gnu*)
     case $HOST in
     flandre | kirisame)
-	    PROMPT="%n@%U%B%F{yellow}%m%f%b%u":%~/$'\n$ '
+	prompt_color=yellow
     ;;
     patchouli | fastener | kamineko)
-        PROMPT="%n@%U%B%F{magenta}%m%f%b%u":%~/$'\n$ '
+	prompt_color=magenta
     ;;
     kuroneko)
-        PROMPT="%n@%U%B%F{blue}%m%f%b%u":%~/$'\n$ '
+	prompt_color=blue
     ;;
     shironeko)
-	    PROMPT="%n@%U%B%F{cyan}%m%f%b%u":%~/$'\n$ '
+	prompt_color=cyan
     ;;
     *)
-	    PROMPT="%n@%U%B%F{green}%m%f%b%u":%~/$'\n$ '
+	prompt_color=cyan
     ;;
     esac
+
+    PROMPT="%n@%U%B%F{${prompt_color}}%m%f%b%u -%1(v|%F{green}[%1v]%f|)":%~/$'\n$ '
     export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/X11R6/bin:/usr/local/bin:/usr/local/ruby/bin
     # ls color
     alias ls='ls -F --color -G'
     ;;
 esac
 
-#
-# Alias
-#
-alias cp='nocorrect cp -ir'
-alias ln='nocorrect ln'
-alias mkdir='nocorrect mkdir'
-alias mv='nocorrect mv -i'
-alias setus='setxkbmap us'
-
-alias dvipdf='dvipdfmx -d 5'
-alias gitgraph="git log --graph --all --color  --pretty='%x09%h %cn%x09%s %Cred%d%Creset'"
-
-#
-# PATHの追加
-#
 
 #
 # コマンド履歴
@@ -128,6 +127,8 @@ setopt hist_reduce_blanks
 #
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
 #
 # for command-line(C-w)
 #
@@ -140,15 +141,9 @@ compdef _tex platex
 compdef _dvi dvipdf
 
 #
-# Git 周り
+# rbenvがあれば有効化
 #
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats '[%b]'
-zstyle ':vcs_info:*' actionformats '[%b|%a]'
-precmd () {
-    psvar=()
-    LANG=en_US.UTF-8 vcs_info
-    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-}
-# バージョン管理されているディレクトリにいれば表示，そうでなければ非表示
-RPROMPT="%1(v|%F{green}%1v%f|)"
+if [ -e $HOME/.rbenv ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
