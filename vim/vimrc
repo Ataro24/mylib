@@ -1,0 +1,29 @@
+syntax on
+set cursorline
+highlight CursorLine ctermbg=239
+set background=dark
+colorscheme darkblue
+set statusline=%F%m%r%h%w\ [ENCODE=%{(&fenc!=''?&fenc:&enc)}]\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
+"set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+set laststatus=2
+
+highlight statusline   term=NONE cterm=NONE guifg=red ctermfg=gray ctermbg=red
+highlight statuslinenc term=NONE cterm=NONE guifg=red ctermfg=gray ctermbg=black
+
+" default tab
+set noautoindent
+set expandtab
+set tabstop=4
+set nu
+
+set backupdir=$HOME/.vimbackup
+set directory=$HOME/.vimbackup
+
+"" 文字エンコード
+set termencoding=utf-8
+set encoding=utf-8
+set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp
+
+"" each language tab
+autocmd! FileType php setlocal tabstop=4 autoindent
+autocmd! FileType ruby setlocal tabstop=2 autoindent
