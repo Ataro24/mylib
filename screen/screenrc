@@ -8,6 +8,10 @@ defscrollback 10240
 defmonitor on # monitoring other window
 defflow off # disable Ctrl+s/Ctrl+q
 
+# default encoding
+defencoding utf8
+encoding utf8 utf8
+
 ### terminfo
 #termcap kterm hs@
 #terminfo kterm hs@
@@ -45,10 +49,23 @@ bind b focus bottom
 
 ### caption, hardstatus
 #caption always " %Lw%=%H %m/%d(%D)%c "
-caption always " %Lw%=%H %m/%d %c "
-hardstatus alwaysignore
+#caption always " %Lw%=%H %m/%d %c "
+#hardstatus alwaysignore
 
 ### bind locale setting 
 bind U eval "encoding utf-8" "!!!echo 'export LANG=ja_JP.UTF-8'"
 bind E eval "encoding euc" "!!!echo 'export LANG=ja_JP.EUC-JP'"
 bind C eval "encoding euc" "!!!echo 'export LANG=C'"
+
+setenv a ""
+setenv a "$a%{= w.}"        # set background color = white
+setenv a "$a %{= .k}%02c:%s "     # set clock
+setenv a "$a%{=b .k}%-w"    # 現在のウインドウより前のウインドウはblue
+setenv a "$a%{=s .r}%n"     # 現在のウインドウ番号はred
+setenv a "$a %t*"          # 現在のウインドウタイトルもred
+setenv a "$a%{=b .k}%+w"    # 現在のウインドウより後ろのウインドウはblue
+setenv a "$a %="            # 以降は右寄せ
+setenv a "$a %{=b .b}%H "     # ホスト名を黄色に
+
+caption always "$a"
+unsetenv a
