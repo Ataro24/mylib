@@ -43,4 +43,7 @@ fi
 ln $LNOPTS -s $MYLIB/etc/vimperator $HOME/.vimperator
 ln $LNOPTS -s $MYLIB/etc/vimperatorrc $HOME/.vimperatorrc
 
+# gitconfig
+ln $LNOPTS -s $MYLIB/git/gitconfig $HOME/.gitconfig
+
 echo "install finished!!"
